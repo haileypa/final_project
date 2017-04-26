@@ -96,9 +96,23 @@ def cache_omdb_info(movie_name):
 		CACHE_DICTION[unique_identifier] = omdb_results
 		f = open(CACHE_FNAME,'w')
 		f.write(json.dumps(CACHE_DICTION, indent = 2))
-		f.close()
-		
+		f.close()	
 	return omdb_results
+	
+class Movie(object):
+	#definea constructor that accepts a dictionary representing a movie
+	def __init__(self, movie_dictionary):
+		self.title = movie_dictionary["Title"]
+		self.director = movie_dictionary["Director"]
+		self.IMDBrating = movie_dictionary["imdbRating"]
+		self.actors = movie_dictionary["Actors"]
+		self.num_languages = len(movie_dictionary["Language"])
+		self.year = movie_dictionary["Year"]
+
+	#define a str method that returns a string of input about the movie
+	def __str__(self):
+		return "Title: {}, Director: {}, Year: {}, IMDB rating: {}, Actors: {}, Number of Languages: {}". format(self.title,self.director, self.year, self.IMDBrating, self.actors, self.num_languages)
+
 
 ########### TESTS ###########
 class cachingTests(unittest.TestCase):
