@@ -134,6 +134,23 @@ class Tweets(object):
 		for a_user in self.users_mentioned_names:
 			user_list_info.append(get_user(a_user))
 		return user_list_info
+		
+## create a list of 3 movies to search for and call it movies_to_search
+# write code to invoke both cache functions
+
+movies_to_search = ["High School Musical", "Lion King", "Finding Dory"]
+movie_info_list_of_dicts = []
+movie_tweets_list = []
+
+## Accumulate the dictionaries from the movies into one list called movie_info_list_of dicts
+## iterate through the list of movies and make a request to OMDB api for each
+
+for movie in movies_to_search: 
+	movie_info = cache_omdb_info(movie)
+	movie_info_list_of_dicts.append(movie_info)
+	movie_tweets = get_tweets_from_search(movie)
+	for tweet in movie_tweets:
+		movie_tweets_list.append(tweet)
 
 
 ########### TESTS ###########
