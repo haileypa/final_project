@@ -50,6 +50,25 @@ try:
 	CACHE_DICTION = json.loads(cache_contents)
 except:
 	CACHE_DICTION = {}
+	
+
+#Define function to cache data from a specific search term on twitter 
+def get_tweets_from_search(search_phrase):
+	tweets = []
+	unique_identifier = "twitter_{}".format(search_phrase)
+	if unique_identifier in CACHE_DICTION:
+		twitter_results = CACHE_DICTION[unique_identifier]
+	else:
+		twitter_results = api.search(q=search_phrase)
+		CACHE_DICTION[unique_identifier] = twitter_results
+		f = open(CACHE_FNAME,'w')
+		f.write(json.dumps(CACHE_DICTION, indent = 2))
+		f.close()
+	for tweet in twitter_results["statuses"]:
+		tweets.append(tweet)
+
+	return tweets
+
 
 ########### TESTS ###########
 class cachingTests(unittest.TestCase):
