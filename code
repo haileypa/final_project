@@ -69,6 +69,20 @@ def get_tweets_from_search(search_phrase):
 
 	return tweets
 
+#Define a function to cache data about twitter users
+def get_user(user_handle):
+	unique_identifier = "twitter_{}".format(user_handle)
+	if unique_identifier in CACHE_DICTION:
+		user_results = CACHE_DICTION[unique_identifier]
+	else:
+		user_results = api.get_user(user_handle)
+		CACHE_DICTION[unique_identifier] = user_results
+		f = open(CACHE_FNAME,'w')
+		f.write(json.dumps(CACHE_DICTION, indent = 2))
+		f.close()
+	
+	return user_results
+
 
 ########### TESTS ###########
 class cachingTests(unittest.TestCase):
