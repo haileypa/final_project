@@ -83,6 +83,22 @@ def get_user(user_handle):
 	
 	return user_results
 
+#define a function to cache data from omdb
+def cache_omdb_info(movie_name):
+	unique_identifier = "omdb_{}".format(movie_name)
+	if unique_identifier in CACHE_DICTION:
+		omdb_results = CACHE_DICTION[unique_identifier]
+	else:
+		r = requests.get("http://www.omdbapi.com/?t="+movie)
+		omdb_results = r.text
+		omdb_results = json.loads(omdb_results)
+		#omdb_results = omdb.search_movie(movie_name)
+		CACHE_DICTION[unique_identifier] = omdb_results
+		f = open(CACHE_FNAME,'w')
+		f.write(json.dumps(CACHE_DICTION, indent = 2))
+		f.close()
+		
+	return omdb_results
 
 ########### TESTS ###########
 class cachingTests(unittest.TestCase):
