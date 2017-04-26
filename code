@@ -113,6 +113,28 @@ class Movie(object):
 	def __str__(self):
 		return "Title: {}, Director: {}, Year: {}, IMDB rating: {}, Actors: {}, Number of Languages: {}". format(self.title,self.director, self.year, self.IMDBrating, self.actors, self.num_languages)
 
+class Tweets(object):
+	def __init__(self, tweets):
+		self.users_mentioned = []
+		self.users_mentioned_names = []
+		for tweet in tweets:
+			self.tweet_id = tweet["id_str"]
+			self.text = tweet["text"]
+			self.user_id = tweet["user"]["id_str"]
+			#self.movie_searched = tweet[1]["query"].replace("+", " ")
+			self.favorites = tweet["favorite_count"]
+			self.retweets = tweet["retweet_count"]
+			self.users_mentioned += tweet["entities"]["user_mentions"]
+			for a_user in self.users_mentioned:
+				if a_user["screen_name"] not in self.users_mentioned_names:
+					self.users_mentioned_names.append(a_user["screen_name"])
+
+	def users_in_neighborhood(self,tweet):
+		user_list_info = []
+		for a_user in self.users_mentioned_names:
+			user_list_info.append(get_user(a_user))
+		return user_list_info
+
 
 ########### TESTS ###########
 class cachingTests(unittest.TestCase):
